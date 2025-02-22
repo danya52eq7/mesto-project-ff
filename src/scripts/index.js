@@ -1,7 +1,7 @@
 import '../pages/index.css';
 import { initialCards } from './cards.js';
 import { deleteCard, likeCard, createCard } from './card.js';
-import { openModal, closeModal, closeByX, closeByOverlay, closeByEsc } from './modal.js';
+import { openModal, closeModal, addCloseByXListener, addCloseByOverlayListener } from './modal.js';
 
 const placesList = document.querySelector('.places__list');  
 const editButton = document.querySelector('.profile__edit-button');
@@ -16,14 +16,11 @@ const formNewPlace = document.querySelector('.form__new-place');
 const cardNameInput = document.querySelector('.popup__input_type_card-name');
 const cardUrlInput = document.querySelector('.popup__input_type_url');
 
-nameInput.value = document.querySelector('.profile__title').textContent;
-jobInput.value = document.querySelector('.profile__description').textContent;
-
 initialCards.forEach(function (obj) {
   placesList.append(createCard(obj, deleteCard, likeCard, zoomCard));
 });
 
-function handleFormSubmit(evt) {
+function editProfile(evt) {
   evt.preventDefault();
 
   nameInput.value = document.querySelector('.profile__title').textContent;
@@ -32,7 +29,7 @@ function handleFormSubmit(evt) {
   closeModal(popupEdit);
 }
 
-formEditProfile.addEventListener('submit', handleFormSubmit); 
+formEditProfile.addEventListener('submit', editProfile); 
 
 function addNewCard(evt) {
   evt.preventDefault();
@@ -58,28 +55,25 @@ function zoomCard(item) {
   document.querySelector('.popup__caption').textContent = item.name;
 }
 
-closeByX(popupImage);
+addCloseByXListener(popupImage);
 
-closeByOverlay(popupImage);
-
-closeByEsc(popupImage);
+addCloseByOverlayListener(popupImage);
 
 editButton.addEventListener('click', function() {
+  nameInput.value = document.querySelector('.profile__title').textContent;
+  jobInput.value = document.querySelector('.profile__description').textContent;
+  
   openModal(popupEdit);
 });
 
-closeByX(popupEdit);
+addCloseByXListener(popupEdit);
 
-closeByOverlay(popupEdit);
-
-closeByEsc(popupEdit);
+addCloseByOverlayListener(popupEdit);
 
 addButton.addEventListener('click', function() {
   openModal(popupNewCard);
 });
 
-closeByX(popupNewCard);
+addCloseByXListener(popupNewCard);
 
-closeByOverlay(popupNewCard);
-
-closeByEsc(popupNewCard);
+addCloseByOverlayListener(popupNewCard);
